@@ -1,0 +1,28 @@
+name: Use Testkube Action
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  use-testkube-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Testkube Action
+        uses: ./path/to/testkube-action
+        with:
+          channel: stable
+          version: ""
+          namespace: testkube
+          url: testkube.dev
+          organization: ${{ secrets.TK_ORGANIZATION }}
+          environment: ${{ secrets.TK_ENVIRONMENT }}
+          token: ${{ secrets.TK_TOKEN }}
+
+      - run: |
+          testkube run test curl-test3 -f
