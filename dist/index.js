@@ -10792,9 +10792,8 @@ else {
     const encodedVersion = encodeURIComponent(params.version);
     const encodedVerSysArch = `${encodeURIComponent(params.version)}_${encodeURIComponent(system)}_${encodeURIComponent(architecture)}`;
     const artifactUrl = `https://github.com/kubeshop/testkube/releases/download/v${encodedVersion}/testkube_${encodedVerSysArch}.tar.gz`;
-    _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.findAllVersions("kubectl-testkube").forEach((version) => {
-        console.log("version: ", version);
-    });
+    const allNodeVersions = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.findAllVersions("kubectl-testkube");
+    console.log(`Versions of node available: ${allNodeVersions}`);
     const existingTestkubePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version);
     console.log("existingTestkubePath: ", existingTestkubePath);
     if (!existingTestkubePath || existingTestkubePath.length === 0) {
