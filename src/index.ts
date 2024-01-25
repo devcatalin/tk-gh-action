@@ -147,7 +147,7 @@ if (await which("kubectl-testkube", { nothrow: true })) {
 
   const artifactUrl = `https://github.com/kubeshop/testkube/releases/download/v${encodedVersion}/testkube_${encodedVerSysArch}.tar.gz`;
 
-  const existingTestkubePath = toolCache.find("kubectl-testkube", params.version, `${system}-${architecture}`);
+  const existingTestkubePath = toolCache.find("kubectl-testkube", params.version);
 
   console.log("existingTestkubePath:", existingTestkubePath);
 
@@ -156,12 +156,7 @@ if (await which("kubectl-testkube", { nothrow: true })) {
     const artifactPath = await toolCache.downloadTool(artifactUrl);
     const artifactExtractedPath = await toolCache.extractTar(artifactPath, binaryDirPath);
     process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
-    const cachedDir = await toolCache.cacheDir(
-      artifactExtractedPath,
-      "kubectl-testkube",
-      params.version,
-      `${system}-${architecture}`
-    );
+    const cachedDir = await toolCache.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version);
     addPath(cachedDir);
   } else {
     addPath(existingTestkubePath);
