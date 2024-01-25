@@ -10793,14 +10793,17 @@ else {
     const encodedVerSysArch = `${encodeURIComponent(params.version)}_${encodeURIComponent(system)}_${encodeURIComponent(architecture)}`;
     const artifactUrl = `https://github.com/kubeshop/testkube/releases/download/v${encodedVersion}/testkube_${encodedVerSysArch}.tar.gz`;
     const existingTestkubePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version, `${system}-${architecture}`);
+    console.log("existingTestkubePath", existingTestkubePath);
     if (!existingTestkubePath || existingTestkubePath.length === 0) {
         process.stdout.write(`Downloading the artifact from "${artifactUrl}"...\n`);
         const artifactPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.downloadTool(artifactUrl);
         const artifactExtractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.extractTar(artifactPath, binaryDirPath);
         process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
-        await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version, `${system}-${architecture}`);
+        const cachedDir = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version, `${system}-${architecture}`);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(cachedDir);
     }
     else {
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(existingTestkubePath);
         process.stdout.write(`Found existing Testkube CLI at "${existingTestkubePath}".\n`);
     }
     const testkubePath = existingTestkubePath
