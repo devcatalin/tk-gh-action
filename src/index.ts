@@ -149,7 +149,7 @@ if (await which("kubectl-testkube", { nothrow: true })) {
 
   const existingTestkubePath = toolCache.find("kubectl-testkube", params.version, `${system}-${architecture}`);
 
-  console.log("existingTestkubePath", existingTestkubePath);
+  console.log("existingTestkubePath:", existingTestkubePath);
 
   if (!existingTestkubePath || existingTestkubePath.length === 0) {
     process.stdout.write(`Downloading the artifact from "${artifactUrl}"...\n`);
