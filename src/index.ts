@@ -156,7 +156,13 @@ if (await which("kubectl-testkube", { nothrow: true })) {
     const artifactPath = await toolCache.downloadTool(artifactUrl);
     const artifactExtractedPath = await toolCache.extractTar(artifactPath, binaryDirPath);
     process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
-    await toolCache.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version, `${system}-${architecture}`);
+    const cachedDir = await toolCache.cacheDir(
+      artifactExtractedPath,
+      "kubectl-testkube",
+      params.version,
+      `${system}-${architecture}`
+    );
+    addPath(cachedDir);
   } else {
     process.stdout.write(`Found existing Testkube CLI at "${existingTestkubePath}".\n`);
   }
