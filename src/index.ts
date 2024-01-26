@@ -111,8 +111,8 @@ if (mode === "kubectl") {
 
 const existingTestkubePath = params.version ? toolCache.find("kubectl-testkube", params.version) : "";
 // if params.version is not specified, we will try to detect if there is any version installed
-const isUnknowmTestkubeInstalled = !params.version && Boolean(await which("kubectl-testkube", { nothrow: true }));
-const isTestkubeInstalled = existingTestkubePath.length > 0 || isUnknowmTestkubeInstalled;
+// const isUnknowmTestkubeInstalled = !params.version && Boolean(await which("kubectl-testkube", { nothrow: true }));
+const isTestkubeInstalled = existingTestkubePath.length > 0; // || isUnknowmTestkubeInstalled;
 
 if (isTestkubeInstalled) {
   if (existingTestkubePath) addPath(existingTestkubePath);
