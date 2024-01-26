@@ -25,4 +25,4 @@ jobs:
           token: ${{ secrets.TK_TOKEN }}
 
       - run: |
-          testkube run test curl-test3
+          testkube run test curl-test3 -f

@@ -10758,9 +10758,11 @@ else {
     process.stdout.write("kubectl: ignored for Cloud integration\n");
 }
 const existingTestkubePath = params.version ? _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version) : "";
+console.log("existingTestkubePath ", existingTestkubePath);
 // if params.version is not specified, we will try to detect if there is any version installed
-// const isUnknowmTestkubeInstalled = !params.version && Boolean(await which("kubectl-testkube", { nothrow: true }));
-const isTestkubeInstalled = existingTestkubePath.length > 0; // || isUnknowmTestkubeInstalled;
+const isUnknowmTestkubeInstalled = !params.version && Boolean(await which__WEBPACK_IMPORTED_MODULE_5___default()("kubectl-testkube", { nothrow: true }));
+console.log("isUnknowmTestkubeInstalled ", isUnknowmTestkubeInstalled);
+const isTestkubeInstalled = existingTestkubePath.length > 0 || isUnknowmTestkubeInstalled;
 if (isTestkubeInstalled) {
     if (existingTestkubePath)
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(existingTestkubePath);
