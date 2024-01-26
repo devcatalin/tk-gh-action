@@ -155,6 +155,9 @@ if (isTestkubeInstalled) {
   if (!isTestkubeInstalled) {
     process.stdout.write(`Downloading the artifact from "${artifactUrl}"...\n`);
     const artifactPath = await toolCache.downloadTool(artifactUrl);
+    if (fs.existsSync(`${binaryDirPath}/kubectl-testkube`)) {
+      fs.rmSync(`${binaryDirPath}/kubectl-testkube`);
+    }
     const artifactExtractedPath = await toolCache.extractTar(artifactPath, binaryDirPath);
     process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
     const cachedDir = await toolCache.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version);
