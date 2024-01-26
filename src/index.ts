@@ -169,9 +169,15 @@ if (isTestkubeInstalled) {
       ? `${existingTestkubePath}/kubectl-testkube}`
       : `${binaryDirPath}/kubectl-testkube`;
 
+  if (fs.existsSync(`${binaryDirPath}/testkube`)) {
+    fs.rmSync(`${binaryDirPath}/testkube`);
+  }
   await fs.promises.symlink(`${testkubePath}`, `${binaryDirPath}/testkube`);
   process.stdout.write(`Linked CLI as ${binaryDirPath}/testkube.\n`);
 
+  if (fs.existsSync(`${binaryDirPath}/tk`)) {
+    fs.rmSync(`${binaryDirPath}/tk`);
+  }
   await fs.promises.symlink(`${testkubePath}`, `${binaryDirPath}/tk`);
   process.stdout.write(`Linked CLI as ${binaryDirPath}/tk.\n`);
 }

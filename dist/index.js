@@ -10811,8 +10811,14 @@ else {
     const testkubePath = existingTestkubePath.length > 0
         ? `${existingTestkubePath}/kubectl-testkube}`
         : `${binaryDirPath}/kubectl-testkube`;
+    if (node_fs__WEBPACK_IMPORTED_MODULE_1__.existsSync(`${binaryDirPath}/testkube`)) {
+        node_fs__WEBPACK_IMPORTED_MODULE_1__.rmSync(`${binaryDirPath}/testkube`);
+    }
     await node_fs__WEBPACK_IMPORTED_MODULE_1__.promises.symlink(`${testkubePath}`, `${binaryDirPath}/testkube`);
     process.stdout.write(`Linked CLI as ${binaryDirPath}/testkube.\n`);
+    if (node_fs__WEBPACK_IMPORTED_MODULE_1__.existsSync(`${binaryDirPath}/tk`)) {
+        node_fs__WEBPACK_IMPORTED_MODULE_1__.rmSync(`${binaryDirPath}/tk`);
+    }
     await node_fs__WEBPACK_IMPORTED_MODULE_1__.promises.symlink(`${testkubePath}`, `${binaryDirPath}/tk`);
     process.stdout.write(`Linked CLI as ${binaryDirPath}/tk.\n`);
 }
