@@ -10757,8 +10757,13 @@ if (mode === "kubectl") {
 else {
     process.stdout.write("kubectl: ignored for Cloud integration\n");
 }
-// Detect if there is Testkube CLI already installed
-if (await which__WEBPACK_IMPORTED_MODULE_5___default()("kubectl-testkube", { nothrow: true })) {
+const existingTestkubePath = params.version ? _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version) : "";
+// if params.version is not specified, we will try to detect if there is any version installed
+const isUnknowmTestkubeInstalled = !params.version && Boolean(await which__WEBPACK_IMPORTED_MODULE_5___default()("kubectl-testkube", { nothrow: true }));
+const isTestkubeInstalled = existingTestkubePath.length > 0 || isUnknowmTestkubeInstalled;
+if (isTestkubeInstalled) {
+    if (existingTestkubePath)
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(existingTestkubePath);
     process.stdout.write("Looks like you already have the Testkube CLI installed. Skipping...\n");
 }
 else {
@@ -10792,24 +10797,15 @@ else {
     const encodedVersion = encodeURIComponent(params.version);
     const encodedVerSysArch = `${encodeURIComponent(params.version)}_${encodeURIComponent(system)}_${encodeURIComponent(architecture)}`;
     const artifactUrl = `https://github.com/kubeshop/testkube/releases/download/v${encodedVersion}/testkube_${encodedVerSysArch}.tar.gz`;
-    const allNodeVersions = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.findAllVersions("kubectl-testkube");
-    console.log(`Versions of node available: ${allNodeVersions}`);
-    const existingTestkubePath = _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version);
-    console.log("existingTestkubePath: ", existingTestkubePath);
-    if (!existingTestkubePath || existingTestkubePath.length === 0) {
+    if (!isTestkubeInstalled) {
         process.stdout.write(`Downloading the artifact from "${artifactUrl}"...\n`);
         const artifactPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.downloadTool(artifactUrl);
         const artifactExtractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.extractTar(artifactPath, binaryDirPath);
         process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
         const cachedDir = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version);
-        console.log("cachedDir: ", cachedDir);
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(cachedDir);
     }
-    else {
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(existingTestkubePath);
-        process.stdout.write(`Found existing Testkube CLI at "${existingTestkubePath}".\n`);
-    }
-    const testkubePath = existingTestkubePath
+    const testkubePath = existingTestkubePath.length > 0
         ? `${existingTestkubePath}/kubectl-testkube}`
         : `${binaryDirPath}/kubectl-testkube`;
     await node_fs__WEBPACK_IMPORTED_MODULE_1__.promises.symlink(`${testkubePath}`, `${binaryDirPath}/testkube`);
