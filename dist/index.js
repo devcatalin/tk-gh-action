@@ -10759,8 +10759,8 @@ else {
 }
 const existingTestkubePath = params.version ? _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.find("kubectl-testkube", params.version) : "";
 // if params.version is not specified, we will try to detect if there is any version installed
-const isUnknowmTestkubeInstalled = !params.version && Boolean(await which__WEBPACK_IMPORTED_MODULE_5___default()("kubectl-testkube", { nothrow: true }));
-const isTestkubeInstalled = existingTestkubePath.length > 0 || isUnknowmTestkubeInstalled;
+// const isUnknowmTestkubeInstalled = !params.version && Boolean(await which("kubectl-testkube", { nothrow: true }));
+const isTestkubeInstalled = existingTestkubePath.length > 0; // || isUnknowmTestkubeInstalled;
 if (isTestkubeInstalled) {
     if (existingTestkubePath)
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_4__.addPath)(existingTestkubePath);
@@ -10800,6 +10800,9 @@ else {
     if (!isTestkubeInstalled) {
         process.stdout.write(`Downloading the artifact from "${artifactUrl}"...\n`);
         const artifactPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.downloadTool(artifactUrl);
+        if (node_fs__WEBPACK_IMPORTED_MODULE_1__.existsSync(`${binaryDirPath}/kubectl-testkube`)) {
+            node_fs__WEBPACK_IMPORTED_MODULE_1__.rmSync(`${binaryDirPath}/kubectl-testkube`);
+        }
         const artifactExtractedPath = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.extractTar(artifactPath, binaryDirPath);
         process.stdout.write(`Extracted CLI to ${binaryDirPath}/kubectl-testkube.\n`);
         const cachedDir = await _actions_tool_cache__WEBPACK_IMPORTED_MODULE_3__.cacheDir(artifactExtractedPath, "kubectl-testkube", params.version);
